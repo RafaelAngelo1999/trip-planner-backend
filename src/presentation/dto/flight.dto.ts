@@ -12,19 +12,19 @@ export const FlightSearchDTOSchema = z.object({
     .optional(),
   departure_date: z.string().date('Invalid departure date format').optional(),
   return_date: z.string().date('Invalid return date format').optional(),
-  passengers: z.number().int().min(1).max(9).default(1),
+  passengers: z.coerce.number().int().min(1).max(9).default(1),
   class: z
     .enum(['economy', 'premium_economy', 'business', 'first'])
     .default('economy'),
-  max_price: z.number().positive().optional(),
+  max_price: z.coerce.number().positive().optional(),
   airline: z.string().optional(),
-  stops: z.number().int().min(0).optional(),
+  stops: z.coerce.number().int().min(0).optional(),
   sort_by: z
     .enum(['price', 'duration', 'departure', 'arrival'])
     .default('price'),
   sort_order: z.enum(['asc', 'desc']).default('asc'),
-  page: z.number().int().min(1).default(1),
-  limit: z.number().int().min(1).max(50).default(10),
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(50).default(10),
 });
 
 export type FlightSearchDTO = z.infer<typeof FlightSearchDTOSchema>;
