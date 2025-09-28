@@ -1,6 +1,7 @@
 import {
   BookingEntity,
   BookingType,
+  BookingStatus,
 } from '../../domain/entities/booking.entity';
 import { FlightEntity } from '../../domain/entities/flight.entity';
 import { PassengerEntity } from '../../domain/entities/passenger.entity';
@@ -68,6 +69,7 @@ export class BookFlightUseCase {
     // Criar booking
     const booking = BookingEntity.create({
       type: BookingType.FLIGHT,
+      status: BookingStatus.PENDING,
       passengerId: passenger.id,
       resourceId: request.flightId,
       totalPrice: flight.price,

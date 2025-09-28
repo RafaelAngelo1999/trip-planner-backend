@@ -211,4 +211,24 @@ export class FlightsController {
       error: 'Internal server error',
     });
   }
+
+  /**
+   * POST /flights/:itineraryId/book - Book flight by itinerary ID
+   */
+  async bookFlightByItinerary(req: Request, res: Response): Promise<void> {
+    try {
+      const { itineraryId } = req.params;
+
+      // Remap itineraryId to id for the existing booking logic
+      req.params.id = itineraryId;
+
+      // Reuse existing booking logic
+      await this.bookFlight(req, res);
+    } catch (error: any) {
+      res.status(500).json({
+        success: false,
+        error: 'Internal server error',
+      });
+    }
+  }
 }

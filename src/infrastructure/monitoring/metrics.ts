@@ -129,41 +129,52 @@ export class MetricsCollector {
   /**
    * Obtém todas as métricas
    */
-  static getMetrics(): typeof MetricsCollector.metrics {
+  static getMetrics(): typeof MetricsCollector.metrics & {
+    computed: {
+      averageResponseTime: number;
+      errorRate: number;
+      successRate: number;
+      averageDbQueryTime: number;
+      bookingSuccessRate: number;
+      uptimeHours: number;
+    };
+  } {
     // Atualizar uptime
     this.metrics.system.uptime = Date.now() - this.metrics.system.startTime;
 
+    const computed = {
+      averageResponseTime:
+        this.metrics.performance.responseTime.count > 0
+          ? this.metrics.performance.responseTime.total /
+            this.metrics.performance.responseTime.count
+          : 0,
+      errorRate:
+        this.metrics.requests.total > 0
+          ? (this.metrics.requests.errors / this.metrics.requests.total) * 100
+          : 0,
+      successRate:
+        this.metrics.requests.total > 0
+          ? (this.metrics.requests.success / this.metrics.requests.total) *
+            100
+          : 0,
+      averageDbQueryTime:
+        this.metrics.performance.databaseQueries.count > 0
+          ? this.metrics.performance.databaseQueries.total /
+            this.metrics.performance.databaseQueries.count
+          : 0,
+      bookingSuccessRate:
+        this.metrics.business.bookings.total > 0
+          ? (this.metrics.business.bookings.successful /
+              this.metrics.business.bookings.total) *
+            100
+          : 0,
+      uptimeHours:
+        (Date.now() - this.metrics.system.startTime) / (1000 * 60 * 60),
+    };
+
     return {
       ...this.metrics,
-      computed: {
-        averageResponseTime:
-          this.metrics.performance.responseTime.count > 0
-            ? this.metrics.performance.responseTime.total /
-              this.metrics.performance.responseTime.count
-            : 0,
-        errorRate:
-          this.metrics.requests.total > 0
-            ? (this.metrics.requests.errors / this.metrics.requests.total) * 100
-            : 0,
-        successRate:
-          this.metrics.requests.total > 0
-            ? (this.metrics.requests.success / this.metrics.requests.total) *
-              100
-            : 0,
-        averageDbQueryTime:
-          this.metrics.performance.databaseQueries.count > 0
-            ? this.metrics.performance.databaseQueries.total /
-              this.metrics.performance.databaseQueries.count
-            : 0,
-        bookingSuccessRate:
-          this.metrics.business.bookings.total > 0
-            ? (this.metrics.business.bookings.successful /
-                this.metrics.business.bookings.total) *
-              100
-            : 0,
-        uptimeHours:
-          (Date.now() - this.metrics.system.startTime) / (1000 * 60 * 60),
-      },
+      computed,
     };
   }
 
@@ -178,7 +189,7 @@ export class MetricsCollector {
     averageResponseTime: number;
   } {
     const metrics = this.getMetrics();
-    const computed = metrics.computed as any;
+    const computed = metrics.computed;
 
     let status: 'healthy' | 'warning' | 'critical' = 'healthy';
 

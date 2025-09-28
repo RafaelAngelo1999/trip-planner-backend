@@ -170,4 +170,30 @@ router.get('/:id', (req, res) => flightsController.getFlightById(req, res));
  */
 router.post('/:id/book', (req, res) => flightsController.bookFlight(req, res));
 
+/**
+ * @swagger
+ * /flights/{itineraryId}/book:
+ *   post:
+ *     summary: Book a flight by itinerary ID
+ *     parameters:
+ *       - in: path
+ *         name: itineraryId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The itinerary ID of the flight to book
+ *     responses:
+ *       201:
+ *         description: Flight booked successfully
+ *       400:
+ *         description: Invalid request data
+ *       404:
+ *         description: Flight not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/:itineraryId/book', (req, res) =>
+  flightsController.bookFlightByItinerary(req, res)
+);
+
 export { router as flightRoutes };

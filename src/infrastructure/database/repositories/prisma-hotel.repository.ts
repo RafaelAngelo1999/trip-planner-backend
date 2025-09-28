@@ -14,7 +14,6 @@ export class PrismaHotelRepository implements HotelRepository {
     if (filters?.city) {
       where.city = {
         contains: filters.city,
-        mode: 'insensitive',
       };
     }
 
@@ -49,7 +48,6 @@ export class PrismaHotelRepository implements HotelRepository {
       where: {
         city: {
           contains: city,
-          mode: 'insensitive',
         },
       },
       orderBy: {
@@ -60,28 +58,36 @@ export class PrismaHotelRepository implements HotelRepository {
     return hotels.map((hotel: any) => HotelEntity.fromPrisma(hotel));
   }
 
-  async create(hotelData: Omit<any, 'id' | 'createdAt' | 'updatedAt'>): Promise<HotelEntity> {
-    const hotel = await this.prisma.hotel.create({
+  async create(hotel: HotelEntity): Promise<HotelEntity> {
+    const createdHotel = await this.prisma.hotel.create({
       data: {
-        ...hotelData,
-        id: crypto.randomUUID(),
+        id: hotel.id,
+        hotelId: hotel.hotelId,
+        name: hotel.name,
+        nightly: hotel.nightly,
+        total: hotel.total,
+        rating: hotel.rating,
+        policy: hotel.policy,
+        currency: hotel.currency,
+        city: hotel.city,
+        createdAt: hotel.createdAt,
+        updatedAt: hotel.updatedAt,
       },
     });
 
     return HotelEntity.fromPrisma(hotel);
   }
 
-  async update(id: string, hotelData: Partial<any>): Promise<HotelEntity | null> {
-    try {
-      const hotel = await this.prisma.hotel.update({
-        where: { id },
-        data: hotelData,
-      });
+  async update(
+    id: string,
+    hotelData: Partial<HotelEntity>
+  ): Promise<HotelEntity> {
+    const hotel = await this.prisma.hotel.update({
+      where: { id },
+      data: hotelData,
+    });
 
-      return HotelEntity.fromPrisma(hotel);
-    } catch (error) {
-      return null;
-    }
+    return HotelEntity.fromPrisma(hotel);
   }
 
   async delete(id: string): Promise<void> {
@@ -95,7 +101,6 @@ export class PrismaHotelRepository implements HotelRepository {
       where: {
         name: {
           contains: name,
-          mode: 'insensitive',
         },
       },
     });
@@ -127,7 +132,6 @@ export class PrismaHotelRepository implements HotelRepository {
     if (filters?.city) {
       where.city = {
         contains: filters.city,
-        mode: 'insensitive',
       };
     }
 

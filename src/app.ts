@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { flightRoutes } from './presentation/routes/flights.routes';
 import hotelRoutes from './presentation/routes/hotels';
+import bookingRoutes from './presentation/routes/bookings';
 import { ErrorHandler } from './presentation/middlewares/error-handler';
 
 class App {
@@ -26,7 +27,13 @@ class App {
         origin: true, // Allow all origins
         credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+        allowedHeaders: [
+          'Content-Type',
+          'Authorization',
+          'X-Requested-With',
+          'Accept',
+          'Origin',
+        ],
       })
     );
 
@@ -68,7 +75,7 @@ class App {
     // API routes
     this.app.use('/api/flights', flightRoutes);
     this.app.use('/api/hotels', hotelRoutes);
-    // this.app.use('/api/bookings', bookingRoutes); // TODO: Implement
+    this.app.use('/api/bookings', bookingRoutes);
 
     // API documentation
     this.app.get('/api', (req, res) => {
