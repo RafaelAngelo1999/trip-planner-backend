@@ -4,10 +4,11 @@
   "description": "Backend Node.js/TypeScript com arquitetura hexagonal para planejamento de viagens",
   "main": "dist/index.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
+    "build": "tsc && prisma generate && prisma db push && npm run db:seed",
+    "start": "node dist/server.js",
     "dev": "tsx watch src/index.ts",
     "server": "tsx watch src/server.ts",
+    "vercel-build": "prisma generate && prisma db push && npm run db:seed",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

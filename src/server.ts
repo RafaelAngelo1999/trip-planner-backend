@@ -466,13 +466,17 @@ app.use((req: Request, res: Response) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  initializeSampleData();
-  console.log(`🚀 Trip Planner Backend running on port ${PORT}`);
-  console.log(`📖 API documentation: http://localhost:${PORT}/api`);
-  console.log(`💚 Health check: http://localhost:${PORT}/health`);
-  console.log(`✈️  Flights: http://localhost:${PORT}/api/flights`);
-});
+// Initialize data immediately for serverless
+initializeSampleData();
+
+// Start server (for local development)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Trip Planner Backend running on port ${PORT}`);
+    console.log(`📖 API documentation: http://localhost:${PORT}/api`);
+    console.log(`💚 Health check: http://localhost:${PORT}/health`);
+    console.log(`✈️  Flights: http://localhost:${PORT}/api/flights`);
+  });
+}
 
 export default app;
