@@ -9,8 +9,8 @@ export class PrismaBookingRepository implements BookingRepository {
   async findAll(filters?: BookingSearchFilters): Promise<BookingEntity[]> {
     const where: any = {};
 
-    if (filters?.passengerId) {
-      where.passengerId = filters.passengerId;
+    if (filters?.passengerEmail) {
+      where.passengerEmail = filters.passengerEmail;
     }
 
     if (filters?.type) {
@@ -61,9 +61,9 @@ export class PrismaBookingRepository implements BookingRepository {
     return booking ? this.toDomainEntity(booking) : null;
   }
 
-  async findByPassengerId(passengerId: string): Promise<BookingEntity[]> {
+  async findByPassengerId(passengerEmail: string): Promise<BookingEntity[]> {
     const bookings = await prisma.booking.findMany({
-      where: { passengerId },
+      where: { passengerEmail },
       orderBy: { bookingDate: 'desc' },
     });
 
@@ -97,8 +97,8 @@ export class PrismaBookingRepository implements BookingRepository {
   async count(filters?: BookingSearchFilters): Promise<number> {
     const where: any = {};
 
-    if (filters?.passengerId) {
-      where.passengerId = filters.passengerId;
+    if (filters?.passengerEmail) {
+      where.passengerEmail = filters.passengerEmail;
     }
 
     if (filters?.type) {
@@ -118,11 +118,12 @@ export class PrismaBookingRepository implements BookingRepository {
       pnr: booking.pnr,
       type: booking.type as any,
       status: booking.status as any,
-      passengerId: booking.passengerId,
       resourceId: booking.resourceId,
       bookingDate: booking.bookingDate,
       totalPrice: booking.totalPrice,
       currency: booking.currency,
+      passengerName: booking.passengerName,
+      passengerEmail: booking.passengerEmail,
       flightDate: booking.flightDate || undefined,
       seatNumber: booking.seatNumber || undefined,
       checkInDate: booking.checkInDate || undefined,
@@ -143,11 +144,12 @@ export class PrismaBookingRepository implements BookingRepository {
       pnr: booking.pnr,
       type: booking.type,
       status: booking.status,
-      passengerId: booking.passengerId,
       resourceId: booking.resourceId,
       bookingDate: booking.bookingDate,
       totalPrice: booking.totalPrice,
       currency: booking.currency,
+      passengerName: booking.passengerName,
+      passengerEmail: booking.passengerEmail,
       flightDate: booking.flightDate,
       seatNumber: booking.seatNumber,
       checkInDate: booking.checkInDate,

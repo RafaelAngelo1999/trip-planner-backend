@@ -4,7 +4,6 @@ import {
   BookingStatus,
 } from '../../domain/entities/booking.entity';
 import { FlightEntity } from '../../domain/entities/flight.entity';
-import { PassengerEntity } from '../../domain/entities/passenger.entity';
 import { BookingRepository } from '../../domain/repositories/booking.repository';
 import { FlightRepository } from '../../domain/repositories/flight.repository';
 import { PNRGeneratorService } from '../../domain/services/pnr-generator.service';
@@ -27,7 +26,6 @@ export interface BookFlightRequest {
 export interface BookFlightResponse {
   booking: BookingEntity;
   flight: FlightEntity;
-  passenger: PassengerEntity;
   pnr: string;
 }
 
@@ -57,23 +55,21 @@ export class BookFlightUseCase {
       throw new Error('No seats available for this flight');
     }
 
-    // Criar passageiro
-    const passenger = PassengerEntity.create(request.passenger);
-
     // Reservar assento
     await this.flightRepository.reserveSeat(request.flightId);
 
     // Gerar PNR
     const pnr = PNRGeneratorService.generate();
 
-    // Criar booking
+    // Criar booking com dados do passageiro embutidos
     const booking = BookingEntity.create({
       type: BookingType.FLIGHT,
       status: BookingStatus.PENDING,
-      passengerId: passenger.id,
       resourceId: request.flightId,
       totalPrice: flight.price,
       currency: flight.currency,
+      passengerName: `${request.passenger.firstName} ${request.passenger.lastName}`,
+      passengerEmail: request.passenger.email,
       flightDate: request.flightDate,
       specialRequests: request.specialRequests,
     });
@@ -88,7 +84,6 @@ export class BookFlightUseCase {
     return {
       booking: savedBooking,
       flight,
-      passenger,
       pnr: savedBooking.pnr,
     };
   }

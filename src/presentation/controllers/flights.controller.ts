@@ -111,18 +111,19 @@ export class FlightsController {
           nationality: bookingData.passenger.nationality,
         },
         flightDate:
-          bookingData.flight_date || new Date().toISOString().split('T')[0], // Default to today if not provided
+          bookingData.flight_date ||
+          (() => {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            return tomorrow.toISOString().split('T')[0];
+          })(), // Default to tomorrow if not provided
         specialRequests: bookingData.special_requests,
       });
 
       const response = {
         success: true,
         data: {
-          booking: this.mapBookingToResponse(
-            result.booking,
-            result.passenger,
-            result.flight
-          ),
+          booking: this.mapBookingToResponse(result.booking, result.flight),
           pnr: result.pnr,
         },
       };
@@ -157,11 +158,7 @@ export class FlightsController {
     };
   }
 
-  private mapBookingToResponse(
-    booking: BookingEntity,
-    passenger: PassengerEntity,
-    flight?: FlightEntity
-  ) {
+  private mapBookingToResponse(booking: BookingEntity, flight?: FlightEntity) {
     return {
       id: booking.id,
       pnr: booking.pnr,
@@ -171,10 +168,8 @@ export class FlightsController {
       currency: booking.currency,
       booking_date: booking.bookingDate.toISOString(),
       passenger: {
-        id: passenger.id,
-        first_name: passenger.firstName,
-        last_name: passenger.lastName,
-        email: passenger.email,
+        name: booking.passengerName,
+        email: booking.passengerEmail,
       },
       flight: flight
         ? {

@@ -33,8 +33,6 @@ model Flight {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  bookings Booking[]
-
   @@map("flights")
 }
 
@@ -51,38 +49,24 @@ model Hotel {
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 
-  bookings Booking[]
-
   @@map("hotels")
 }
 
-model Passenger {
-  id           String   @id @default(uuid())
-  firstName    String
-  lastName     String
-  email        String   @unique
-  phone        String
-  dateOfBirth  String   // ISO date string
-  passport     String?
-  nationality  String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
 
-  bookings Booking[]
-
-  @@map("passengers")
-}
 
 model Booking {
   id              String   @id @default(uuid())
   pnr             String   @unique
   type            String   // "FLIGHT" or "HOTEL"
   status          String   @default("PENDING") // "PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"
-  passengerId     String
   resourceId      String   // flight_id or hotel_id
   bookingDate     DateTime @default(now())
   totalPrice      Float
   currency        String   @default("BRL")
+  
+  // Passenger fields (embedded)
+  passengerName   String   // Nome completo do passageiro
+  passengerEmail  String   // Email do passageiro
   
   // Flight-specific fields
   flightDate      String?  // ISO date string
@@ -101,10 +85,6 @@ model Booking {
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-
-  passenger Passenger @relation(fields: [passengerId], references: [id], onDelete: Cascade)
-  flight    Flight?   @relation(fields: [resourceId], references: [id], onDelete: Cascade)
-  hotel     Hotel?    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 
   @@map("bookings")
 }

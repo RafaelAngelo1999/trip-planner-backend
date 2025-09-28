@@ -106,4 +106,19 @@ export class PassengerEntity {
 
     return new PassengerEntity(passenger);
   }
+
+  static fromPrisma(prismaPassenger: any): PassengerEntity {
+    return new PassengerEntity({
+      id: prismaPassenger.id,
+      firstName: prismaPassenger.firstName,
+      lastName: prismaPassenger.lastName,
+      email: prismaPassenger.email,
+      phone: prismaPassenger.phone,
+      dateOfBirth: prismaPassenger.dateOfBirth,
+      passport: prismaPassenger.passport,
+      nationality: prismaPassenger.nationality,
+      createdAt: prismaPassenger.createdAt,
+      updatedAt: prismaPassenger.updatedAt,
+    });
+  }
 }

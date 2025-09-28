@@ -17,7 +17,6 @@ export const BookingSchema = z.object({
   pnr: z.string().length(6, 'PNR must be exactly 6 characters'),
   type: z.nativeEnum(BookingType),
   status: z.nativeEnum(BookingStatus).default(BookingStatus.PENDING),
-  passengerId: z.string().uuid('Invalid passenger ID'),
   resourceId: z.string().uuid('Invalid resource ID'), // flight_id ou hotel_id
   bookingDate: z.date().default(() => new Date()),
   totalPrice: z.number().positive('Total price must be positive'),
@@ -25,6 +24,10 @@ export const BookingSchema = z.object({
     .string()
     .length(3, 'Currency must be a 3-letter code')
     .default('BRL'),
+
+  // Passenger fields (embedded)
+  passengerName: z.string().min(1, 'Passenger name is required'),
+  passengerEmail: z.string().email('Invalid passenger email'),
 
   // Campos específicos para voos
   flightDate: z.string().date().optional(),
@@ -80,14 +83,15 @@ export class BookingEntity {
       }
     }
 
-    // Validar que booking não é no passado
+    // Validar que booking não é muito no passado (permite mesmo dia)
     const bookingDate = this.data.flightDate || this.data.checkInDate;
     if (bookingDate) {
       const date = new Date(bookingDate);
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      yesterday.setHours(0, 0, 0, 0);
 
-      if (date < today) {
+      if (date < yesterday) {
         throw new Error('Booking date cannot be in the past');
       }
     }
@@ -106,8 +110,11 @@ export class BookingEntity {
   get status(): BookingStatus {
     return this.data.status;
   }
-  get passengerId(): string {
-    return this.data.passengerId;
+  get passengerName(): string {
+    return this.data.passengerName;
+  }
+  get passengerEmail(): string {
+    return this.data.passengerEmail;
   }
   get resourceId(): string {
     return this.data.resourceId;

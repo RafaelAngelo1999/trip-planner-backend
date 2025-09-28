@@ -154,8 +154,12 @@ router.get('/', (req, res) => bookingsController.getAllBookings(req, res));
  *       500:
  *         description: Internal server error
  */
-router.put('/:bookingId/cancel', (req, res) =>
-  bookingsController.cancelBooking(req, res)
+/**
+ * PUT /bookings/{pnr}/cancel - Cancel booking by PNR or booking ID
+ * PNR is 6 characters, booking ID is UUID format
+ */
+router.put('/:identifier/cancel', (req, res) =>
+  bookingsController.cancelBookingByIdentifier(req, res)
 );
 
 export default router;

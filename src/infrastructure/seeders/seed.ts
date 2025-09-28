@@ -9,7 +9,6 @@ async function main() {
     // Clear existing data
     console.log('🧹 Clearing existing data...');
     await prisma.booking.deleteMany();
-    await prisma.passenger.deleteMany();
     await prisma.flight.deleteMany();
     await prisma.hotel.deleteMany();
 

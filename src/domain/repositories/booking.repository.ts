@@ -5,7 +5,7 @@ import {
 } from '../entities/booking.entity';
 
 export interface BookingSearchFilters {
-  passengerId?: string;
+  passengerEmail?: string;
   type?: BookingType;
   status?: BookingStatus;
   pnr?: string;
