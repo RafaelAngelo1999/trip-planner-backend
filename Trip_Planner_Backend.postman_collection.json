@@ -1,0 +1,439 @@
+{
+  "info": {
+    "_postman_id": "12345678-1234-1234-1234-123456789abc",
+    "name": "Trip Planner Backend API",
+    "description": "Collection para testar a API do Trip Planner Backend com reservas de voos",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "Health & Info",
+      "item": [
+        {
+          "name": "Health Check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has success field\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "API Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Flights",
+      "item": [
+        {
+          "name": "Listar Todos os Voos",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has flights data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "    pm.expect(jsonData.data.flights).to.be.an('array');",
+                  "});",
+                  "",
+                  "// Save first flight ID for booking test",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data.flights.length > 0) {",
+                  "    pm.environment.set(\"flight_id\", jsonData.data.flights[0].id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/flights",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar Voos CNF -> GRU",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/flights?origin=CNF&destination=GRU&departure_date=2024-12-15",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights"
+              ],
+              "query": [
+                {
+                  "key": "origin",
+                  "value": "CNF"
+                },
+                {
+                  "key": "destination",
+                  "value": "GRU"
+                },
+                {
+                  "key": "departure_date",
+                  "value": "2024-12-15"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar Voos CNF -> SFO (Internacional)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/flights?origin=CNF&destination=SFO&departure_date=2024-12-20",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights"
+              ],
+              "query": [
+                {
+                  "key": "origin",
+                  "value": "CNF"
+                },
+                {
+                  "key": "destination",
+                  "value": "SFO"
+                },
+                {
+                  "key": "departure_date",
+                  "value": "2024-12-20"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Detalhes de um Voo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/flights/{{flight_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights",
+                "{{flight_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Reservar Voo - João Silva",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Booking created successfully\", function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test(\"Response has booking data\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(true);",
+                  "    pm.expect(jsonData.data.booking).to.have.property('pnr');",
+                  "    pm.expect(jsonData.data.booking.status).to.eql('CONFIRMED');",
+                  "});",
+                  "",
+                  "// Save PNR for future reference",
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.data.booking.pnr) {",
+                  "    pm.environment.set(\"pnr\", jsonData.data.booking.pnr);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"passenger\": {\n    \"first_name\": \"João\",\n    \"last_name\": \"Silva\",\n    \"email\": \"joao.silva@email.com\",\n    \"phone\": \"+5511999887766\",\n    \"date_of_birth\": \"1990-05-15\",\n    \"passport\": \"BR123456789\",\n    \"nationality\": \"Brazilian\"\n  },\n  \"flight_date\": \"2024-12-15\",\n  \"special_requests\": \"Assento próximo à janela, refeição vegetariana\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/flights/{{flight_id}}/book",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights",
+                "{{flight_id}}",
+                "book"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reservar Voo - Maria Santos",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"passenger\": {\n    \"first_name\": \"Maria\",\n    \"last_name\": \"Santos\",\n    \"email\": \"maria.santos@email.com\",\n    \"phone\": \"+5511888776655\",\n    \"date_of_birth\": \"1985-08-22\",\n    \"passport\": \"BR987654321\",\n    \"nationality\": \"Brazilian\"\n  },\n  \"flight_date\": \"2024-12-15\",\n  \"special_requests\": \"Assento corredor, sem refeição\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/flights/{{flight_id}}/book",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights",
+                "{{flight_id}}",
+                "book"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reservar Voo Internacional - Carlos Oliveira",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"passenger\": {\n    \"first_name\": \"Carlos\",\n    \"last_name\": \"Oliveira\",\n    \"email\": \"carlos.oliveira@email.com\",\n    \"phone\": \"+5511777665544\",\n    \"date_of_birth\": \"1978-03-10\",\n    \"passport\": \"BR456789123\",\n    \"nationality\": \"Brazilian\"\n  },\n  \"flight_date\": \"2024-12-20\",\n  \"special_requests\": \"Upgrade para classe executiva se disponível\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/flights/{{flight_id}}/book",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights",
+                "{{flight_id}}",
+                "book"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Error Cases",
+      "item": [
+        {
+          "name": "Tentar Reservar Voo Inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Should return 404 for non-existent flight\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});",
+                  "",
+                  "pm.test(\"Should return error message\", function () {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.eql(false);",
+                  "    pm.expect(jsonData.error).to.eql('Flight not found');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"passenger\": {\n    \"first_name\": \"Teste\",\n    \"last_name\": \"Erro\",\n    \"email\": \"teste@email.com\",\n    \"phone\": \"+5511999999999\",\n    \"date_of_birth\": \"1990-01-01\",\n    \"passport\": \"BR000000000\",\n    \"nationality\": \"Brazilian\"\n  },\n  \"flight_date\": \"2024-12-15\",\n  \"special_requests\": \"Teste de erro\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/flights/flight-inexistente/book",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights",
+                "flight-inexistente",
+                "book"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Buscar Voo Inexistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Should return 404 for non-existent flight\", function () {",
+                  "    pm.response.to.have.status(404);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/flights/flight-inexistente",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "flights",
+                "flight-inexistente"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3001",
+      "type": "string"
+    },
+    {
+      "key": "flight_id",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "pnr",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

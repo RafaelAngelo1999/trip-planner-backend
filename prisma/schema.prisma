@@ -1,0 +1,126 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Flight {
+  id               String   @id @default(uuid())
+  flightNumber     String   @unique
+  airline          String
+  origin           String   // 3-letter airport code
+  destination      String   // 3-letter airport code
+  departureTime    String   // ISO datetime string
+  arrivalTime      String   // ISO datetime string
+  price            Float
+  currency         String   @default("BRL")
+  availableSeats   Int
+  totalSeats       Int
+  aircraft         String
+  duration         String   // HH:MM format
+  stops            Int      @default(0)
+  stopCities       String?  // JSON array as string
+  baggageIncluded  Boolean  @default(true)
+  mealIncluded     Boolean  @default(false)
+  refundable       Boolean  @default(false)
+  bookingClass     String   @default("economy") // economy, premium_economy, business, first
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  bookings Booking[]
+
+  @@map("flights")
+}
+
+model Hotel {
+  id                  String   @id @default(uuid())
+  name                String
+  description         String?
+  address             String
+  city                String
+  state               String
+  country             String
+  zipCode             String
+  latitude            Float?
+  longitude           Float?
+  rating              Float
+  totalRooms          Int
+  availableRooms      Int
+  pricePerNight       Float
+  currency            String   @default("BRL")
+  amenities           String   // JSON array as string
+  images              String   // JSON array as string
+  checkInTime         String   @default("14:00")
+  checkOutTime        String   @default("12:00")
+  cancellationPolicy  String   @default("Free cancellation up to 24 hours before check-in")
+  breakfastIncluded   Boolean  @default(false)
+  wifiIncluded        Boolean  @default(true)
+  parkingIncluded     Boolean  @default(false)
+  petFriendly         Boolean  @default(false)
+  stars               Int      @default(3)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  bookings Booking[]
+
+  @@map("hotels")
+}
+
+model Passenger {
+  id           String   @id @default(uuid())
+  firstName    String
+  lastName     String
+  email        String   @unique
+  phone        String
+  dateOfBirth  String   // ISO date string
+  passport     String?
+  nationality  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  bookings Booking[]
+
+  @@map("passengers")
+}
+
+model Booking {
+  id              String   @id @default(uuid())
+  pnr             String   @unique
+  type            String   // "FLIGHT" or "HOTEL"
+  status          String   @default("PENDING") // "PENDING", "CONFIRMED", "CANCELLED", "COMPLETED"
+  passengerId     String
+  resourceId      String   // flight_id or hotel_id
+  bookingDate     DateTime @default(now())
+  totalPrice      Float
+  currency        String   @default("BRL")
+  
+  // Flight-specific fields
+  flightDate      String?  // ISO date string
+  seatNumber      String?
+  
+  // Hotel-specific fields
+  checkInDate     String?  // ISO date string
+  checkOutDate    String?  // ISO date string
+  nights          Int?
+  roomNumber      String?
+  
+  // Optional fields
+  specialRequests String?
+  cancelReason    String?
+  cancelledAt     DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  passenger Passenger @relation(fields: [passengerId], references: [id], onDelete: Cascade)
+  flight    Flight?   @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  hotel     Hotel?    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+
+  @@map("bookings")
+}
