@@ -1,10 +1,9 @@
-import { BookingEntity } from '../../domain/entities/booking.entity';
+import { BookingEntity } from '../../../domain/entities/booking.entity';
 import {
   BookingRepository,
   BookingSearchFilters,
-} from '../../domain/repositories/booking.repository';
-import { prisma } from '../database/prisma/client';
-import { Booking } from '@prisma/client';
+} from '../../../domain/repositories/booking.repository';
+import { prisma } from '../prisma/client';
 
 export class PrismaBookingRepository implements BookingRepository {
   async findAll(filters?: BookingSearchFilters): Promise<BookingEntity[]> {
@@ -113,7 +112,7 @@ export class PrismaBookingRepository implements BookingRepository {
     return prisma.booking.count({ where });
   }
 
-  private toDomainEntity(booking: Booking): BookingEntity {
+  private toDomainEntity(booking: any): BookingEntity {
     return new BookingEntity({
       id: booking.id,
       pnr: booking.pnr,

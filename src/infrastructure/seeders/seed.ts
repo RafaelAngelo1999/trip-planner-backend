@@ -1,6 +1,6 @@
 import { prisma } from '../database/prisma/client';
 import { seedFlights } from './flights.seed';
-import { seedHotels } from './hotels-new.seed';
+import { hotelSeedData } from './hotels-simplified.seed';
 
 async function main() {
   console.log('🚀 Starting database seeding...');
@@ -44,37 +44,18 @@ async function main() {
     }
 
     // Seed hotels
-    const hotels = await seedHotels();
-    for (const hotel of hotels) {
+    for (const hotel of hotelSeedData) {
       await prisma.hotel.create({
         data: {
-          id: hotel.id,
+          id: crypto.randomUUID(),
           hotelId: hotel.hotelId,
           name: hotel.name,
-          description: hotel.description,
-          address: hotel.address,
-          city: hotel.city,
-          state: hotel.state,
-          country: hotel.country,
-          zipCode: hotel.zipCode,
-          latitude: hotel.latitude,
-          longitude: hotel.longitude,
-          rating: hotel.rating,
           nightly: hotel.nightly,
           total: hotel.total,
-          currency: hotel.currency,
+          rating: hotel.rating,
           policy: hotel.policy,
-          image: hotel.image,
-          totalRooms: hotel.totalRooms,
-          availableRooms: hotel.availableRooms,
-          amenities: hotel.amenities ? JSON.stringify(hotel.amenities) : null,
-          checkInTime: hotel.checkInTime,
-          checkOutTime: hotel.checkOutTime,
-          breakfastIncluded: hotel.breakfastIncluded,
-          wifiIncluded: hotel.wifiIncluded,
-          parkingIncluded: hotel.parkingIncluded,
-          petFriendly: hotel.petFriendly,
-          stars: hotel.stars
+          currency: hotel.currency,
+          city: hotel.city,
         },
       });
     }
@@ -82,7 +63,7 @@ async function main() {
     console.log('✅ Database seeding completed successfully!');
     console.log(`📊 Summary:`);
     console.log(`   - Flights: ${flights.length}`);
-    console.log(`   - Hotels: ${hotels.length}`);
+    console.log(`   - Hotels: ${hotelSeedData.length}`);
   } catch (error) {
     console.error('❌ Error during seeding:', error);
     process.exit(1);

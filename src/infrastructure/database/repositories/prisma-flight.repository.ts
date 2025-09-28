@@ -1,10 +1,9 @@
-import { FlightEntity } from '../../domain/entities/flight.entity';
+import { FlightEntity } from '../../../domain/entities/flight.entity';
 import {
   FlightRepository,
   FlightSearchFilters,
-} from '../../domain/repositories/flight.repository';
-import { prisma } from '../database/prisma/client';
-import { Flight } from '@prisma/client';
+} from '../../../domain/repositories/flight.repository';
+import { prisma } from '../prisma/client';
 
 export class PrismaFlightRepository implements FlightRepository {
   async findAll(filters?: FlightSearchFilters): Promise<FlightEntity[]> {
@@ -147,7 +146,7 @@ export class PrismaFlightRepository implements FlightRepository {
     return prisma.flight.count({ where });
   }
 
-  private toDomainEntity(flight: Flight): FlightEntity {
+  private toDomainEntity(flight: any): FlightEntity {
     return new FlightEntity({
       id: flight.id,
       flightNumber: flight.flightNumber,

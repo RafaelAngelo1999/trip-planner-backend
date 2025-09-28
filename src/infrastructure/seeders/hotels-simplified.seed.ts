@@ -1,0 +1,111 @@
+import { HotelEntity } from '../../domain/entities/hotel.entity';
+
+export const hotelSeedData = [
+  // Hotéis em Belo Horizonte
+  {
+    hotelId: 'bh-001',
+    name: 'Tryp by Wyndham Belo Horizonte Savassi',
+    nightly: 280.0,
+    total: 560.0,
+    rating: 4.6,
+    policy: 'Cancelamento gratuito até 24h antes - Café da manhã incluído',
+    currency: 'BRL',
+    city: 'Belo Horizonte',
+  },
+  {
+    hotelId: 'bh-002',
+    name: 'Radisson Blu Belo Horizonte',
+    nightly: 320.0,
+    total: 640.0,
+    rating: 4.5,
+    policy: 'Cancelamento gratuito até 48h antes',
+    currency: 'BRL',
+    city: 'Belo Horizonte',
+  },
+  {
+    hotelId: 'bh-003',
+    name: 'Holiday Inn Express Belo Horizonte Afonso Pena',
+    nightly: 195.0,
+    total: 390.0,
+    rating: 4.2,
+    policy: 'Cancelamento gratuito até 24h antes - Café da manhã incluído',
+    currency: 'BRL',
+    city: 'Belo Horizonte',
+  },
+  {
+    hotelId: 'bh-004',
+    name: 'Hotel Ouro Minas Palace',
+    nightly: 450.0,
+    total: 900.0,
+    rating: 4.8,
+    policy: 'Cancelamento gratuito até 72h antes',
+    currency: 'BRL',
+    city: 'Belo Horizonte',
+  },
+  {
+    hotelId: 'bh-005',
+    name: 'Intercity Belo Horizonte',
+    nightly: 220.0,
+    total: 440.0,
+    rating: 4.3,
+    policy: 'Cancelamento gratuito até 24h antes',
+    currency: 'BRL',
+    city: 'Belo Horizonte',
+  },
+  {
+    hotelId: 'bh-006',
+    name: 'Comfort Hotel Belo Horizonte',
+    nightly: 165.0,
+    total: 330.0,
+    rating: 4.1,
+    policy: 'Cancelamento gratuito até 24h antes - Café da manhã incluído',
+    currency: 'BRL',
+    city: 'Belo Horizonte',
+  },
+  {
+    hotelId: 'bh-007',
+    name: 'Dayrell Hotel e Centro de Convenções',
+    nightly: 185.0,
+    total: 370.0,
+    rating: 4.0,
+    policy: 'Cancelamento gratuito até 24h antes',
+    currency: 'BRL',
+    city: 'Belo Horizonte',
+  },
+
+  // Hotéis em San Francisco
+  {
+    hotelId: 'sf-001',
+    name: 'Hotel Zephyr San Francisco',
+    nightly: 450.0,
+    total: 900.0,
+    rating: 4.4,
+    policy: 'Free cancellation until 24h before - Breakfast included',
+    currency: 'USD',
+    city: 'San Francisco',
+  },
+  {
+    hotelId: 'sf-002',
+    name: 'The Ritz-Carlton San Francisco',
+    nightly: 850.0,
+    total: 1700.0,
+    rating: 4.9,
+    policy: 'Free cancellation until 48h before',
+    currency: 'USD',
+    city: 'San Francisco',
+  },
+  {
+    hotelId: 'sf-003',
+    name: 'Hotel Nikko San Francisco',
+    nightly: 380.0,
+    total: 760.0,
+    rating: 4.3,
+    policy: 'Free cancellation until 24h before',
+    currency: 'USD',
+    city: 'San Francisco',
+  },
+];
+
+export const createHotelSeedEntities = (): HotelEntity[] => {
+  return hotelSeedData.map((data) => HotelEntity.create(data));
+};

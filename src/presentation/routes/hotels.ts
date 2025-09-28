@@ -149,6 +149,8 @@ router.get('/:id', (req, res) => hotelController.getHotelById(req, res));
  *       400:
  *         description: Invalid city parameter
  */
-router.get('/city/:city', (req, res) => hotelController.getHotelsByCity(req, res));
+router.get('/city/:city', (req, res) =>
+  hotelController.getHotelsByCity(req, res)
+);
 
 export default router;

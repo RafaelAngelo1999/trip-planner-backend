@@ -8,17 +8,26 @@ const hotelSearchSchema = z.object({
   city: z.string().optional(),
   state: z.string().optional(),
   country: z.string().optional(),
-  checkInDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  checkOutDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
+  checkInDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  checkOutDate: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
   guests: z.coerce.number().int().positive().optional(),
   minRating: z.coerce.number().min(0).max(5).optional(),
   maxPrice: z.coerce.number().positive().optional(),
-  amenities: z.string().transform(val => val.split(',')).optional(),
+  amenities: z
+    .string()
+    .transform((val) => val.split(','))
+    .optional(),
   stars: z.coerce.number().int().min(1).max(5).optional(),
   sortBy: z.enum(['price', 'rating', 'stars', 'name']).optional(),
   sortOrder: z.enum(['asc', 'desc']).optional(),
   page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(50).default(10)
+  limit: z.coerce.number().int().positive().max(50).default(10),
 });
 
 export class HotelController {
@@ -37,11 +46,11 @@ export class HotelController {
       const result = await this.getHotelsUseCase.execute(validatedParams);
 
       // Converter entidades para resposta da API
-      const hotelsResponse = result.hotels.map(hotel => hotel.toApiResponse());
+      const hotelsResponse = result.hotels.map((hotel) => hotel.toJSON());
 
       res.json({
         hotels: hotelsResponse,
-        pagination: result.pagination
+        pagination: result.pagination,
       });
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -49,12 +58,12 @@ export class HotelController {
           error: {
             code: 'VALIDATION_ERROR',
             message: 'Parâmetros de consulta inválidos',
-            details: error.errors.map(err => ({
+            details: error.errors.map((err) => ({
               field: err.path.join('.'),
-              message: err.message
+              message: err.message,
             })),
-            timestamp: new Date().toISOString()
-          }
+            timestamp: new Date().toISOString(),
+          },
         });
         return;
       }
@@ -64,8 +73,8 @@ export class HotelController {
         error: {
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Erro interno do servidor',
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       });
     }
   }
@@ -84,8 +93,8 @@ export class HotelController {
           error: {
             code: 'INVALID_ID',
             message: 'ID do hotel deve ser um UUID válido',
-            timestamp: new Date().toISOString()
-          }
+            timestamp: new Date().toISOString(),
+          },
         });
         return;
       }
@@ -96,8 +105,8 @@ export class HotelController {
         error: {
           code: 'NOT_IMPLEMENTED',
           message: 'Endpoint não implementado ainda',
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       });
     } catch (error) {
       console.error('Error in getHotelById:', error);
@@ -105,8 +114,8 @@ export class HotelController {
         error: {
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Erro interno do servidor',
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       });
     }
   }
@@ -125,8 +134,8 @@ export class HotelController {
           error: {
             code: 'INVALID_CITY',
             message: 'Nome da cidade é obrigatório',
-            timestamp: new Date().toISOString()
-          }
+            timestamp: new Date().toISOString(),
+          },
         });
         return;
       }
@@ -134,15 +143,15 @@ export class HotelController {
       const result = await this.getHotelsUseCase.execute({
         city: city.trim(),
         page: Number(page),
-        limit: Number(limit)
+        limit: Number(limit),
       });
 
-      const hotelsResponse = result.hotels.map(hotel => hotel.toApiResponse());
+      const hotelsResponse = result.hotels.map((hotel) => hotel.toJSON());
 
       res.json({
         hotels: hotelsResponse,
         pagination: result.pagination,
-        city: city.trim()
+        city: city.trim(),
       });
     } catch (error) {
       console.error('Error in getHotelsByCity:', error);
@@ -150,8 +159,8 @@ export class HotelController {
         error: {
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Erro interno do servidor',
-          timestamp: new Date().toISOString()
-        }
+          timestamp: new Date().toISOString(),
+        },
       });
     }
   }

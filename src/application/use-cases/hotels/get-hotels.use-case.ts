@@ -1,5 +1,8 @@
 import { HotelEntity } from '../../../domain/entities/hotel.entity';
-import { HotelRepository, HotelSearchFilters } from '../../../domain/repositories/hotel.repository';
+import {
+  HotelRepository,
+  HotelSearchFilters,
+} from '../../../domain/repositories/hotel.repository';
 
 export interface GetHotelsParams {
   city?: string;
@@ -41,15 +44,15 @@ export class GetHotelsUseCase {
     const filters: HotelSearchFilters = {
       ...params,
       limit,
-      offset
+      offset,
     };
 
     // Buscar hotéis
     const hotels = await this.hotelRepository.findAll(filters);
-    
+
     // Contar total de hotéis
     const total = await this.hotelRepository.count(filters);
-    
+
     const totalPages = Math.ceil(total / limit);
 
     return {
@@ -60,8 +63,8 @@ export class GetHotelsUseCase {
         limit,
         totalPages,
         hasNext: page < totalPages,
-        hasPrevious: page > 1
-      }
+        hasPrevious: page > 1,
+      },
     };
   }
 }

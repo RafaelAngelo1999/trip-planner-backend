@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { flightRoutes } from './presentation/routes/flights.routes';
+import hotelRoutes from './presentation/routes/hotels';
 import { ErrorHandler } from './presentation/middlewares/error-handler';
 
 class App {
@@ -19,19 +20,13 @@ class App {
     // Security middleware
     this.app.use(helmet());
 
-    // CORS configuration for LangGraph integration
+    // CORS configuration - Allow all origins
     this.app.use(
       cors({
-        origin: [
-          'http://localhost:2024', // LangGraph default port
-          'http://localhost:3000', // React development
-          'http://localhost:3001', // Alternative React port
-          'http://127.0.0.1:2024',
-          'http://127.0.0.1:3000',
-        ],
+        origin: true, // Allow all origins
         credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
       })
     );
 
@@ -72,7 +67,7 @@ class App {
 
     // API routes
     this.app.use('/api/flights', flightRoutes);
-    // this.app.use('/api/hotels', hotelRoutes); // TODO: Implement
+    this.app.use('/api/hotels', hotelRoutes);
     // this.app.use('/api/bookings', bookingRoutes); // TODO: Implement
 
     // API documentation
