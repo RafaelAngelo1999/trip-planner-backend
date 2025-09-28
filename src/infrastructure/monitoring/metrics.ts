@@ -154,8 +154,7 @@ export class MetricsCollector {
           : 0,
       successRate:
         this.metrics.requests.total > 0
-          ? (this.metrics.requests.success / this.metrics.requests.total) *
-            100
+          ? (this.metrics.requests.success / this.metrics.requests.total) * 100
           : 0,
       averageDbQueryTime:
         this.metrics.performance.databaseQueries.count > 0
