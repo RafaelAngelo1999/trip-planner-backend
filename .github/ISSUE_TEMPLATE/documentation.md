@@ -9,13 +9,14 @@ assignees: []
 ## 📚 Documentation Issue
 
 **What documentation is affected?**
+
 - [ ] README.md
 - [ ] API documentation
 - [ ] Code comments
 - [ ] Contributing guide
 - [ ] Setup instructions
 - [ ] Examples/tutorials
-- [ ] Other: ___________
+- [ ] Other: ****\_\_\_****
 
 ## 🐛 Issue Type
 
@@ -29,6 +30,7 @@ assignees: []
 ## 📍 Location
 
 **Where is the issue located?**
+
 - File: [e.g. README.md, CONTRIBUTING.md]
 - Section: [e.g. Installation, API Endpoints]
 - Line number (if applicable): [e.g. line 42]

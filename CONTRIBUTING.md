@@ -11,10 +11,12 @@ Este projeto adere ao [Código de Conduta do Contributor Covenant](https://www.c
 ### 1. Reportar Bugs
 
 **Antes de reportar um bug:**
+
 - Verifique se o bug já foi reportado nas [Issues](https://github.com/seu-usuario/trip-planner-backend/issues)
 - Certifique-se de estar usando a versão mais recente
 
 **Como reportar:**
+
 - Use o template de bug report
 - Inclua steps para reproduzir
 - Adicione logs e screenshots quando possível
@@ -23,6 +25,7 @@ Este projeto adere ao [Código de Conduta do Contributor Covenant](https://www.c
 ### 2. Sugerir Melhorias
 
 **Para sugestões de funcionalidades:**
+
 - Abra uma issue com o template de feature request
 - Descreva o problema que a funcionalidade resolveria
 - Explique como você imagina que deveria funcionar
@@ -52,6 +55,7 @@ npm test
 #### Fluxo de Trabalho
 
 1. **Crie uma branch para sua feature/bugfix:**
+
    ```bash
    git checkout -b feature/nome-da-feature
    # ou
@@ -65,6 +69,7 @@ npm test
    - Use mensagens de commit descritivas
 
 3. **Execute testes e linting:**
+
    ```bash
    npm run test
    npm run lint
@@ -72,6 +77,7 @@ npm test
    ```
 
 4. **Faça commit das alterações:**
+
    ```bash
    git add .
    git commit -m "feat: adiciona endpoint para cancelar reservas"
@@ -95,6 +101,7 @@ Usamos [Conventional Commits](https://www.conventionalcommits.org/):
 - `chore`: Manutenção, build, etc.
 
 **Exemplos:**
+
 ```
 feat(flights): adiciona filtro por companhia aérea
 fix(booking): corrige validação de data de nascimento
@@ -157,10 +164,10 @@ describe('BookFlightUseCase', () => {
     // Arrange
     const mockFlight = FlightEntity.create({...});
     const mockPassenger = PassengerEntity.create({...});
-    
+
     // Act
     const result = await useCase.execute({...});
-    
+
     // Assert
     expect(result).toEqual({...});
   });
@@ -207,6 +214,7 @@ describe('BookFlightUseCase', () => {
 ## 📞 Ajuda
 
 **Precisa de ajuda?**
+
 - 💬 Abra uma [Discussion](https://github.com/seu-usuario/trip-planner-backend/discussions)
 - 🐛 Reporte bugs nas [Issues](https://github.com/seu-usuario/trip-planner-backend/issues)
 - 📧 Entre em contato: [seu-email@exemplo.com]

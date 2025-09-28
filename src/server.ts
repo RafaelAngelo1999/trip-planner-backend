@@ -1,6 +1,12 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { FlightEntity, HotelEntity, BookingEntity, BookingType, PassengerEntity } from './common/entities';
+import {
+  FlightEntity,
+  HotelEntity,
+  BookingEntity,
+  BookingType,
+  PassengerEntity,
+} from './common/entities';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -12,10 +18,17 @@ const bookings: BookingEntity[] = [];
 
 // Middleware
 app.use(express.json());
-app.use(cors({
-  origin: ['http://localhost:2024', 'http://localhost:3000', 'http://127.0.0.1:2024', 'http://127.0.0.1:3000'],
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:2024',
+      'http://localhost:3000',
+      'http://127.0.0.1:2024',
+      'http://127.0.0.1:3000',
+    ],
+    credentials: true,
+  })
+);
 
 // Populate with sample data
 function initializeSampleData() {
@@ -78,10 +91,10 @@ function initializeSampleData() {
       mealIncluded: true,
       refundable: true,
       bookingClass: 'economy',
-    }
+    },
   ];
 
-  flightData.forEach(data => {
+  flightData.forEach((data) => {
     flights.push(FlightEntity.create(data));
   });
 
@@ -106,7 +119,8 @@ function initializeSampleData() {
       images: [],
       checkInTime: '15:00',
       checkOutTime: '12:00',
-      cancellationPolicy: 'Cancelamento gratuito até 24 horas antes do check-in',
+      cancellationPolicy:
+        'Cancelamento gratuito até 24 horas antes do check-in',
       breakfastIncluded: true,
       wifiIncluded: true,
       parkingIncluded: true,
@@ -132,20 +146,23 @@ function initializeSampleData() {
       images: [],
       checkInTime: '15:00',
       checkOutTime: '12:00',
-      cancellationPolicy: 'Cancelamento gratuito até 72 horas antes do check-in',
+      cancellationPolicy:
+        'Cancelamento gratuito até 72 horas antes do check-in',
       breakfastIncluded: true,
       wifiIncluded: true,
       parkingIncluded: true,
       petFriendly: true,
       stars: 5,
-    }
+    },
   ];
 
-  hotelData.forEach(data => {
+  hotelData.forEach((data) => {
     hotels.push(HotelEntity.create(data));
   });
 
-  console.log(`✅ Initialized with ${flights.length} flights and ${hotels.length} hotels`);
+  console.log(
+    `✅ Initialized with ${flights.length} flights and ${hotels.length} hotels`
+  );
 }
 
 // Routes
@@ -175,21 +192,30 @@ app.get('/api', (req: Request, res: Response) => {
 // Flight routes
 app.get('/api/flights', (req: Request, res: Response) => {
   try {
-    const { origin, destination, departure_date, passengers = 1, page = 1, limit = 10 } = req.query;
-    
+    const {
+      origin,
+      destination,
+      departure_date,
+      passengers = 1,
+      page = 1,
+      limit = 10,
+    } = req.query;
+
     let filteredFlights = [...flights];
-    
+
     if (origin) {
-      filteredFlights = filteredFlights.filter(f => f.origin === origin);
+      filteredFlights = filteredFlights.filter((f) => f.origin === origin);
     }
-    
+
     if (destination) {
-      filteredFlights = filteredFlights.filter(f => f.destination === destination);
+      filteredFlights = filteredFlights.filter(
+        (f) => f.destination === destination
+      );
     }
-    
+
     if (departure_date) {
       const searchDate = new Date(departure_date as string);
-      filteredFlights = filteredFlights.filter(f => {
+      filteredFlights = filteredFlights.filter((f) => {
         const flightDate = new Date(f.departureTime);
         return flightDate.toDateString() === searchDate.toDateString();
       });
@@ -199,11 +225,11 @@ app.get('/api/flights', (req: Request, res: Response) => {
     const startIndex = (Number(page) - 1) * Number(limit);
     const endIndex = startIndex + Number(limit);
     const paginatedFlights = filteredFlights.slice(startIndex, endIndex);
-    
+
     res.json({
       success: true,
       data: {
-        flights: paginatedFlights.map(flight => ({
+        flights: paginatedFlights.map((flight) => ({
           id: flight.id,
           flight_number: flight.flightNumber,
           airline: flight.airline,
@@ -229,13 +255,13 @@ app.get('/api/flights', (req: Request, res: Response) => {
           page: Number(page),
           limit: Number(limit),
           total_pages: Math.ceil(filteredFlights.length / Number(limit)),
-        }
-      }
+        },
+      },
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: 'Internal server error',
     });
   }
 });
@@ -243,15 +269,15 @@ app.get('/api/flights', (req: Request, res: Response) => {
 app.get('/api/flights/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const flight = flights.find(f => f.id === id);
-    
+    const flight = flights.find((f) => f.id === id);
+
     if (!flight) {
       return res.status(404).json({
         success: false,
-        error: 'Flight not found'
+        error: 'Flight not found',
       });
     }
-    
+
     res.json({
       success: true,
       data: {
@@ -275,13 +301,13 @@ app.get('/api/flights/:id', (req: Request, res: Response) => {
           meal_included: flight.mealIncluded,
           refundable: flight.refundable,
           booking_class: flight.bookingClass,
-        }
-      }
+        },
+      },
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      error: 'Internal server error'
+      error: 'Internal server error',
     });
   }
 });
@@ -290,23 +316,23 @@ app.post('/api/flights/:id/book', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { passenger, flight_date, special_requests } = req.body;
-    
-    const flight = flights.find(f => f.id === id);
-    
+
+    const flight = flights.find((f) => f.id === id);
+
     if (!flight) {
       return res.status(404).json({
         success: false,
-        error: 'Flight not found'
+        error: 'Flight not found',
       });
     }
-    
+
     if (!flight.isAvailable()) {
       return res.status(409).json({
         success: false,
-        error: 'No seats available for this flight'
+        error: 'No seats available for this flight',
       });
     }
-    
+
     // Create passenger
     const newPassenger = PassengerEntity.create({
       firstName: passenger.first_name,
@@ -317,10 +343,10 @@ app.post('/api/flights/:id/book', (req: Request, res: Response) => {
       passport: passenger.passport,
       nationality: passenger.nationality,
     });
-    
+
     // Reserve seat
     flight.reserveSeat();
-    
+
     // Create booking
     const booking = BookingEntity.create({
       type: BookingType.FLIGHT,
@@ -332,10 +358,10 @@ app.post('/api/flights/:id/book', (req: Request, res: Response) => {
       flightDate: flight_date,
       specialRequests: special_requests,
     });
-    
+
     booking.confirm();
     bookings.push(booking);
-    
+
     res.status(201).json({
       success: true,
       data: {
@@ -361,16 +387,16 @@ app.post('/api/flights/:id/book', (req: Request, res: Response) => {
             destination: flight.destination,
             departure_time: flight.departureTime,
             arrival_time: flight.arrivalTime,
-          }
+          },
         },
         pnr: booking.pnr,
-      }
+      },
     });
   } catch (error: any) {
     console.error('Booking error:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Internal server error'
+      error: error.message || 'Internal server error',
     });
   }
 });
@@ -379,26 +405,26 @@ app.put('/api/bookings/:id/cancel', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { reason } = req.body;
-    
-    const booking = bookings.find(b => b.id === id);
-    
+
+    const booking = bookings.find((b) => b.id === id);
+
     if (!booking) {
       return res.status(404).json({
         success: false,
-        error: 'Booking not found'
+        error: 'Booking not found',
       });
     }
-    
+
     if (booking.status === 'CANCELLED') {
       return res.status(409).json({
         success: false,
-        error: 'Booking is already cancelled'
+        error: 'Booking is already cancelled',
       });
     }
-    
+
     // Cancel booking
     booking.cancel(reason);
-    
+
     res.json({
       success: true,
       data: {
@@ -408,15 +434,15 @@ app.put('/api/bookings/:id/cancel', (req: Request, res: Response) => {
           status: booking.status,
           cancel_reason: booking.cancelReason,
           cancelled_at: booking.cancelledAt?.toISOString(),
-        }
+        },
       },
-      message: 'Booking cancelled successfully'
+      message: 'Booking cancelled successfully',
     });
   } catch (error: any) {
     console.error('Cancel booking error:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Internal server error'
+      error: error.message || 'Internal server error',
     });
   }
 });
@@ -424,15 +450,15 @@ app.put('/api/bookings/:id/cancel', (req: Request, res: Response) => {
 app.get('/api/bookings/:id', (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const booking = bookings.find(b => b.id === id);
-    
+    const booking = bookings.find((b) => b.id === id);
+
     if (!booking) {
       return res.status(404).json({
         success: false,
-        error: 'Booking not found'
+        error: 'Booking not found',
       });
     }
-    
+
     res.json({
       success: true,
       data: {
@@ -446,14 +472,14 @@ app.get('/api/bookings/:id', (req: Request, res: Response) => {
           booking_date: booking.bookingDate.toISOString(),
           cancel_reason: booking.cancelReason,
           cancelled_at: booking.cancelledAt?.toISOString(),
-        }
-      }
+        },
+      },
     });
   } catch (error: any) {
     console.error('Get booking error:', error);
     res.status(500).json({
       success: false,
-      error: error.message || 'Internal server error'
+      error: error.message || 'Internal server error',
     });
   }
 });
@@ -462,7 +488,7 @@ app.get('/api/bookings/:id', (req: Request, res: Response) => {
 app.use((req: Request, res: Response) => {
   res.status(404).json({
     success: false,
-    error: `Route ${req.method} ${req.originalUrl} not found`
+    error: `Route ${req.method} ${req.originalUrl} not found`,
   });
 });
 

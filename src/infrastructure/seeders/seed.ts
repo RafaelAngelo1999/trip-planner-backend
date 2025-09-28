@@ -1,6 +1,6 @@
 import { prisma } from '../database/prisma/client';
 import { seedFlights } from './flights.seed';
-import { seedHotels } from './hotels.seed';
+import { seedHotels } from './hotels-new.seed';
 
 async function main() {
   console.log('🚀 Starting database seeding...');
@@ -49,6 +49,7 @@ async function main() {
       await prisma.hotel.create({
         data: {
           id: hotel.id,
+          hotelId: hotel.hotelId,
           name: hotel.name,
           description: hotel.description,
           address: hotel.address,
@@ -59,20 +60,21 @@ async function main() {
           latitude: hotel.latitude,
           longitude: hotel.longitude,
           rating: hotel.rating,
+          nightly: hotel.nightly,
+          total: hotel.total,
+          currency: hotel.currency,
+          policy: hotel.policy,
+          image: hotel.image,
           totalRooms: hotel.totalRooms,
           availableRooms: hotel.availableRooms,
-          pricePerNight: hotel.pricePerNight,
-          currency: hotel.currency,
-          amenities: JSON.stringify(hotel.amenities),
-          images: JSON.stringify(hotel.images),
+          amenities: hotel.amenities ? JSON.stringify(hotel.amenities) : null,
           checkInTime: hotel.checkInTime,
           checkOutTime: hotel.checkOutTime,
-          cancellationPolicy: hotel.cancellationPolicy,
           breakfastIncluded: hotel.breakfastIncluded,
           wifiIncluded: hotel.wifiIncluded,
           parkingIncluded: hotel.parkingIncluded,
           petFriendly: hotel.petFriendly,
-          stars: hotel.stars,
+          stars: hotel.stars
         },
       });
     }

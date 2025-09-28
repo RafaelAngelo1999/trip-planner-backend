@@ -2,10 +2,10 @@
 
 ## 📢 Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | ✅ Yes             |
-| < 1.0   | ❌ No              |
+| Version | Supported |
+| ------- | --------- |
+| 1.0.x   | ✅ Yes    |
+| < 1.0   | ❌ No     |
 
 ## 🚨 Reporting a Vulnerability
 
@@ -36,6 +36,7 @@ Em vez disso:
 ### 🏆 Reconhecimento
 
 Contribuidores responsáveis de segurança serão:
+
 - Reconhecidos no CHANGELOG.md
 - Creditados na correção (se desejarem)
 - Listados em nosso hall da fama de segurança
@@ -134,6 +135,7 @@ API_KEY="prod-api-key-with-high-entropy"
 ### Alerting
 
 Set up alerts for:
+
 - High error rates (>5%)
 - Unusual traffic patterns
 - Failed authentication spikes

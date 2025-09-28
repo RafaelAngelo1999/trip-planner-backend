@@ -1,77 +1,74 @@
-# 🚀 Trip Planner Backend
+# �️ Trip Planner Backend
 
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue)](https://www.typescriptlang.org/)
-[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
-[![Docker](https://img.shields.io/badge/Docker-supported-blue)](Dockerfile)
+[![Live API](htt## 📚 **Documentação Completa**
 
-Backend Node.js/TypeScript com arquitetura hexagonal para sistema de planejamento de viagens, projetado para ser 100% compatível com o LangGraph Trip Planner. Oferece APIs robustas para reserva de voos, hotéis e gerenciamento de viagens.
+| Documento                                      | Descrição                                                            |
+| ---------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| [🔗 API-REFERENCE.md](./docs/API-REFERENCE.md) | **Referência completa** - Todas as rotas, inputs, outputs e exemplos |
+| [📡 API.md](./docs/API.md)                     | Documentação da API com exemplos de uso                              |
+| [🏗️ ARCHITECTURE.md](./docs/ARCHITECTURE.md)   | Arquitetura hexagonal e padrões de design                            |
+| [🚀 DEPLOYMENT.md](./docs/DEPLOYMENT.md)       | Guias de deploy para Vercel, Docker, AWS                             | g.shields.io/badge/Live_API-Online-success?style=for-the-badge)](https://trip-planner-backend-three.vercel.app/health) |
 
-## 🎯 Demonstração Rápida
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5+-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-ORM-indigo?style=for-the-badge&logo=prisma)](https://prisma.io/)
+[![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)](LICENSE)
 
-```bash
-# Clone e configure
-git clone https://github.com/seu-usuario/trip-planner-backend.git
-cd trip-planner-backend
-npm install && npm run db:generate && npm run db:push && npm run db:seed
+> **Backend Node.js/TypeScript com arquitetura hexagonal para sistema de planejamento de viagens**
 
-# Inicie o servidor
-npm run server
+## 🌐 **API Online**
 
-# Teste a API
-curl http://localhost:3001/api/flights
-```
+**Base URL:** https://trip-planner-backend-three.vercel.app
 
 **Endpoints principais:**
-- 🏥 Health Check: `GET /health`
-- ✈️ Listar voos: `GET /api/flights`
-- 📋 Reservar voo: `POST /api/flights/:id/book`
-- ❌ Cancelar reserva: `PUT /api/bookings/:id/cancel`
-- 📄 Ver reserva: `GET /api/bookings/:id`
-- 🏨 Listar hotéis: `GET /api/hotels` (em breve)
 
-## ✨ Características Principais
+- 🟢 [`GET /health`](https://trip-planner-backend-three.vercel.app/health) - Status da API
+- ✈️ [`GET /api/flights`](https://trip-planner-backend-three.vercel.app/api/flights) - Listar voos
+- 🎫 [`POST /api/flights/:id/book`](https://trip-planner-backend-three.vercel.app/api/flights) - Reservar voo
+- ❌ [`PUT /api/bookings/:id/cancel`](https://trip-planner-backend-three.vercel.app/api/bookings) - Cancelar reserva
 
-- **🏗️ Arquitetura Hexagonal**: Separação clara entre domínio, aplicação e infraestrutura
-- **🔒 TypeScript**: Tipagem estática e desenvolvimento mais seguro  
-- **🗄️ Prisma + SQLite**: ORM moderno com banco de dados leve e performático
-- **🌐 APIs RESTful**: Endpoints totalmente compatíveis com LangGraph
-- **📊 Monitoramento**: Logging estruturado com Winston e métricas detalhadas
-- **🔄 Simulação Realista**: Latência variável, taxa de falha e preços dinâmicos
-- **🐳 Docker**: Containerização completa com multi-stage builds
-- **📚 Documentação**: APIs documentadas com Postman e exemplos práticos
-- **🧪 Testes**: Suite completa de testes unitários e integração
-- **🚀 CI/CD**: GitHub Actions para deploy automatizado
-
-## 🛠️ Stack Tecnológica
-
-- **Runtime**: Node.js 18+
-- **Linguagem**: TypeScript
-- **Framework**: Express.js
-- **Banco de Dados**: SQLite com Prisma ORM
-- **Validação**: Zod
-- **Logging**: Winston
-- **Testes**: Jest
-- **Containerização**: Docker
-
-## 📋 Pré-requisitos
-
-- Node.js 18+
-- npm 8+
-- Docker (opcional)
-
-## 🚀 Instalação e Setup
-
-### 1. Clone e instale dependências
+## 🚀 **Demonstração Rápida**
 
 ```bash
-git clone <repository-url>
-cd chat-backend
-npm install
+# Health check
+curl https://trip-planner-backend-three.vercel.app/health
+
+# Buscar voos CNF → GRU
+curl "https://trip-planner-backend-three.vercel.app/api/flights?origin=CNF&destination=GRU"
+
+# Teste local
+git clone https://github.com/RafaelAngelo1999/trip-planner-backend.git
+cd trip-planner-backend && npm install && npm run server
 ```
 
-### 2. Configure o banco de dados
+## ✨ **Características Técnicas**
+
+- ⚡ **API Online**: Totalmente funcional e acessível via internet
+- 🏗️ **Arquitetura Hexagonal**: Separação clara entre domínio, aplicação e infraestrutura
+- � **TypeScript**: Tipagem estática e desenvolvimento mais seguro
+- 🗄️ **Prisma + SQLite**: ORM moderno com banco de dados leve e performático
+- 🌐 **APIs RESTful**: Endpoints totalmente compatíveis com LangGraph
+- ✅ **Validação Zod**: Validação robusta de dados de entrada
+- 📱 **CORS Habilitado**: Pronto para integração com frontends
+- ☁️ **Deploy Vercel**: Infraestrutura serverless otimizada
+
+## � **Documentação Completa**
+
+| Documento                                    | Descrição                                 |
+| -------------------------------------------- | ----------------------------------------- |
+| [� API.md](./docs/API.md)                    | Documentação completa da API com exemplos |
+| [🏗️ ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Arquitetura hexagonal e padrões de design |
+| [🚀 DEPLOYMENT.md](./docs/DEPLOYMENT.md)     | Guias de deploy para Vercel, Docker, AWS  |
+
+## ⚡ **Início Rápido - Desenvolvimento Local**
+
+````bash
+# 1. Clone e instale
+git clone https://github.com/RafaelAngelo1999/trip-planner-backend.git
+cd trip-planner-backend
+npm install
+
+# 2. Configure o banco
 
 ```bash
 # Gerar cliente Prisma
@@ -80,56 +77,37 @@ npm run db:generate
 # Aplicar schema ao banco
 npm run db:push
 
-# Popular com dados de exemplo
+npm run db:generate
+npm run db:push
 npm run db:seed
-```
 
-### 3. Execute em desenvolvimento
-
-```bash
+# 3. Execute em desenvolvimento
 npm run dev
-```
+# 🌐 Servidor local: http://localhost:3001
+````
 
-O servidor estará disponível em `http://localhost:3001`
-
-### 4. Execute com Docker (Recomendado)
+## 🔧 **Scripts Disponíveis**
 
 ```bash
-# Build e start com docker-compose
-npm run docker:up
-
-# Para parar
-npm run docker:down
+npm run dev          # Desenvolvimento com watch mode
+npm run build        # Build para produção
+npm run start        # Executar versão de produção
+npm run db:generate  # Gerar cliente Prisma
+npm run db:push      # Aplicar schema ao banco
+npm run db:seed      # Popular dados de exemplo
+npm run db:studio    # Interface visual do banco
+npm test             # Executar testes
 ```
 
-## 📊 Dados de Exemplo
+## 📊 **Dados de Exemplo**
 
 O sistema vem pré-populado com:
 
-### ✈️ Voos (9 voos)
-
-- **6 voos domésticos diretos**: CNF ↔ GRU, CNF ↔ GIG
-- **3 voos internacionais**: CNF → SFO (via GRU, MIA, IAH)
-- **Preços**: R$ 800-4.500 (doméstico), R$ 6.000-8.500 (internacional)
-- **Companhias**: LATAM, Gol, Azul, American Airlines, United, Delta
-
-### 🏨 Hotéis (7 hotéis em BH)
-
-- Tryp by Wyndham, Radisson Blu, Holiday Inn Express
-- Mercure, ibis, Hotel Fasano, Quality Hotel
-- **Ratings**: 3.9-4.9 estrelas
-- **Preços**: R$ 140-650/noite
-- **Localização**: Diversos bairros de Belo Horizonte
-
-## 🔌 Endpoints da API
-
-### Voos
-
-```http
-GET    /api/flights                 # Buscar voos
-GET    /api/flights/:id             # Detalhes do voo
-POST   /api/flights/:id/book        # Reservar voo
-```
+- ✈️ **30+ voos**: Domésticos e internacionais incluindo CNF → SFO (2025-10-01)
+- 🏨 **10 hotéis**: Belo Horizonte (7) + San Francisco (3)
+- 💰 **Preços realistas**: Voos R$ 800-8.500, Hotéis R$ 140-650/noite
+- 🏢 **Companhias**: LATAM, Gol, Azul, American Airlines, United, Delta
+- 🗓️ **Datas específicas**: Incluindo voos para outubro de 2025
 
 ### Saúde do Sistema
 
@@ -229,98 +207,47 @@ npm run dev          # Desenvolvimento com hot reload
 npm run build        # Build para produção
 npm run start        # Executar em produção
 npm run db:generate  # Gerar cliente Prisma
-npm run db:push      # Aplicar schema
-npm run db:seed      # Popular banco com dados
-npm run db:studio    # Interface visual do banco
-npm run lint         # Verificar código
-npm run format       # Formatar código
-npm run docker:up    # Docker compose up
-npm run docker:down  # Docker compose down
+## 🧑‍💻 **Desenvolvimento**
+
+### Estrutura do Projeto
 ```
 
-## 🌍 Variáveis de Ambiente
+src/
+├── domain/ # 🧠 Regras de negócio puras
+├── application/ # 🔄 Casos de uso da aplicação  
+├── infrastructure/ # 🔧 Implementações técnicas
+├── presentation/ # 🌐 Controllers e rotas HTTP
+└── shared/ # 🛠️ Utilitários compartilhados
 
-```env
-NODE_ENV=development
-PORT=3001
-LOG_LEVEL=debug
-ENABLE_FILE_LOGGING=false
-DATABASE_URL="file:./dev.db"
-```
+````
 
-## 🚀 Deploy
-
-### Docker Production
-
+### Comandos de Desenvolvimento
 ```bash
-# Build da imagem
-docker build -t trip-planner-backend .
+npm run dev          # 🔥 Hot reload development
+npm run db:studio    # 🎨 Interface visual do Prisma
+npm test             # 🧪 Executar testes
+npm run build        # 📦 Build de produção
+````
 
-# Run container
-docker run -p 3001:3001 \
-  -e NODE_ENV=production \
-  -e LOG_LEVEL=info \
-  trip-planner-backend
-```
-
-### Manual Deploy
-
-```bash
-# Build do projeto
-npm run build
-
-# Preparar banco
-npm run db:generate
-npm run db:push
-npm run db:seed
-
-# Executar
-npm start
-```
-
-## 📊 Monitoramento
-
-### Health Check
-
-```bash
-curl http://localhost:3001/health
-```
-
-### Métricas
-
-- **Requests**: Total, sucessos, erros por endpoint
-- **Performance**: Tempo de resposta, queries lentas
-- **Business**: Bookings, buscas, taxa de conversão
-- **Sistema**: Uptime, uso de recursos
-
-## 🔮 Próximos Passos
-
-- [ ] Implementar rotas de hotéis
-- [ ] Adicionar autenticação JWT
-- [ ] Integração com APIs reais (Amadeus, Booking.com)
-- [ ] Cache com Redis
-- [ ] Swagger UI completo
-- [ ] Testes de integração
-- [ ] CI/CD pipeline
-- [ ] Métricas Prometheus
-
-## 🤝 Contribuição
+## 🤝 **Contribuindo**
 
 1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -am 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+2. Crie sua feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit suas mudanças (`git commit -m 'Add amazing feature'`)
+4. Push para a branch (`git push origin feature/amazing-feature`)
 5. Abra um Pull Request
 
-## 📄 Licença
+## 📄 **Licença**
 
 Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
 
-## 📞 Suporte
-
-- **Issues**: [GitHub Issues](https://github.com/user/repo/issues)
-- **Email**: rafael@example.com
-
 ---
 
-**Desenvolvido com ❤️ para integração perfeita com LangGraph Trip Planner**
+<div align="center">
+  <strong>�️ Trip Planner Backend - Pronto para a próxima aventura!</strong>
+  <br><br>
+  <a href="https://trip-planner-backend-three.vercel.app/health">🟢 Status da API</a> •
+  <a href="./docs/API.md">📡 API Docs</a> •
+  <a href="./docs/ARCHITECTURE.md">🏗️ Arquitetura</a> •
+  <a href="./docs/DEPLOYMENT.md">🚀 Deploy</a>
+</div>

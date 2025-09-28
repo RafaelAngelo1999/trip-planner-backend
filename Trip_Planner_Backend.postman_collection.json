@@ -35,12 +35,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/health",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "health"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["health"]
             }
           },
           "response": []
@@ -52,12 +48,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api"]
             }
           },
           "response": []
@@ -99,13 +91,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/flights",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights"]
             }
           },
           "response": []
@@ -117,13 +104,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/flights?origin=CNF&destination=GRU&departure_date=2024-12-15",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights"
-              ],
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights"],
               "query": [
                 {
                   "key": "origin",
@@ -149,13 +131,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/flights?origin=CNF&destination=SFO&departure_date=2024-12-20",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights"
-              ],
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights"],
               "query": [
                 {
                   "key": "origin",
@@ -181,14 +158,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/flights/{{flight_id}}",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights",
-                "{{flight_id}}"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights", "{{flight_id}}"]
             }
           },
           "response": []
@@ -240,15 +211,8 @@
             },
             "url": {
               "raw": "{{base_url}}/api/flights/{{flight_id}}/book",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights",
-                "{{flight_id}}",
-                "book"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights", "{{flight_id}}", "book"]
             }
           },
           "response": []
@@ -269,15 +233,8 @@
             },
             "url": {
               "raw": "{{base_url}}/api/flights/{{flight_id}}/book",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights",
-                "{{flight_id}}",
-                "book"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights", "{{flight_id}}", "book"]
             }
           },
           "response": []
@@ -298,15 +255,8 @@
             },
             "url": {
               "raw": "{{base_url}}/api/flights/{{flight_id}}/book",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights",
-                "{{flight_id}}",
-                "book"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights", "{{flight_id}}", "book"]
             }
           },
           "response": []
@@ -351,15 +301,8 @@
             },
             "url": {
               "raw": "{{base_url}}/api/flights/flight-inexistente/book",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights",
-                "flight-inexistente",
-                "book"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights", "flight-inexistente", "book"]
             }
           },
           "response": []
@@ -384,14 +327,8 @@
             "header": [],
             "url": {
               "raw": "{{base_url}}/api/flights/flight-inexistente",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "api",
-                "flights",
-                "flight-inexistente"
-              ]
+              "host": ["{{base_url}}"],
+              "path": ["api", "flights", "flight-inexistente"]
             }
           },
           "response": []
@@ -404,18 +341,14 @@
       "listen": "prerequest",
       "script": {
         "type": "text/javascript",
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     },
     {
       "listen": "test",
       "script": {
         "type": "text/javascript",
-        "exec": [
-          ""
-        ]
+        "exec": [""]
       }
     }
   ],
