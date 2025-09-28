@@ -85,18 +85,33 @@ export class FlightsController {
       const { id } = req.params;
       const bookingData = FlightBookingDTOSchema.parse(req.body);
 
+      // Handle name field - split if provided as single name
+      let firstName: string;
+      let lastName: string;
+
+      if (bookingData.passenger.name) {
+        const nameParts = bookingData.passenger.name.trim().split(' ');
+        firstName = nameParts[0];
+        lastName =
+          nameParts.length > 1 ? nameParts.slice(1).join(' ') : nameParts[0];
+      } else {
+        firstName = bookingData.passenger.first_name!;
+        lastName = bookingData.passenger.last_name!;
+      }
+
       const result = await this.bookFlightUseCase.execute({
         flightId: id,
         passenger: {
-          firstName: bookingData.passenger.first_name,
-          lastName: bookingData.passenger.last_name,
+          firstName,
+          lastName,
           email: bookingData.passenger.email,
-          phone: bookingData.passenger.phone,
-          dateOfBirth: bookingData.passenger.date_of_birth,
+          phone: bookingData.passenger.phone || '+5511999999999', // Default phone if not provided
+          dateOfBirth: bookingData.passenger.date_of_birth || '1990-01-01', // Default if not provided
           passport: bookingData.passenger.passport,
           nationality: bookingData.passenger.nationality,
         },
-        flightDate: bookingData.flight_date,
+        flightDate:
+          bookingData.flight_date || new Date().toISOString().split('T')[0], // Default to today if not provided
         specialRequests: bookingData.special_requests,
       });
 

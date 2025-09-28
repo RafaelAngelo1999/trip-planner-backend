@@ -56,17 +56,31 @@ export type FlightResponseDTO = z.infer<typeof FlightResponseDTOSchema>;
 
 // DTO para booking de voos
 export const FlightBookingDTOSchema = z.object({
-  flight_id: z.string().uuid('Invalid flight ID'),
-  passenger: z.object({
-    first_name: z.string().min(1, 'First name is required'),
-    last_name: z.string().min(1, 'Last name is required'),
-    email: z.string().email('Invalid email format'),
-    phone: z.string().min(10, 'Phone number must have at least 10 digits'),
-    date_of_birth: z.string().date('Invalid date format'),
-    passport: z.string().optional(),
-    nationality: z.string().min(1, 'Nationality is required'),
-  }),
-  flight_date: z.string().date('Invalid flight date format'),
+  flight_id: z.string().uuid('Invalid flight ID').optional(), // Optional because it comes from URL params
+  passenger: z
+    .object({
+      // Accept both formats: separate first_name/last_name OR combined name
+      first_name: z.string().min(1, 'First name is required').optional(),
+      last_name: z.string().min(1, 'Last name is required').optional(),
+      name: z.string().min(1, 'Name is required').optional(),
+      email: z.string().email('Invalid email format'), // REQUIRED
+      phone: z.string().optional(), // Made optional
+      date_of_birth: z.string().date('Invalid date format').optional(),
+      passport: z.string().optional(),
+      nationality: z.string().default('BR'), // Default nationality
+      document: z.string().optional(), // Accept document field
+    })
+    .refine(
+      (data) => {
+        // Either name OR (first_name AND last_name) must be provided
+        return data.name || (data.first_name && data.last_name);
+      },
+      {
+        message:
+          "Either 'name' or both 'first_name' and 'last_name' must be provided",
+      }
+    ),
+  flight_date: z.string().date('Invalid flight date format').optional(), // Make optional, can default to departure date
   special_requests: z.string().optional(),
 });
 
