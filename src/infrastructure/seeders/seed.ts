@@ -1,6 +1,6 @@
 import { prisma } from '../database/prisma/client';
-import { seedFlights } from './flights.seed';
-import { hotelSeedData } from './hotels-simplified.seed';
+import { seedFlights } from './flights-expanded.seed';
+import { seedHotels } from './hotels-expanded.seed';
 
 async function main() {
   console.log('🚀 Starting database seeding...');
@@ -43,10 +43,11 @@ async function main() {
     }
 
     // Seed hotels
-    for (const hotel of hotelSeedData) {
+    const hotels = await seedHotels();
+    for (const hotel of hotels) {
       await prisma.hotel.create({
         data: {
-          id: crypto.randomUUID(),
+          id: hotel.id,
           hotelId: hotel.hotelId,
           name: hotel.name,
           nightly: hotel.nightly,
@@ -62,7 +63,7 @@ async function main() {
     console.log('✅ Database seeding completed successfully!');
     console.log(`📊 Summary:`);
     console.log(`   - Flights: ${flights.length}`);
-    console.log(`   - Hotels: ${hotelSeedData.length}`);
+    console.log(`   - Hotels: ${hotels.length}`);
   } catch (error) {
     console.error('❌ Error during seeding:', error);
     process.exit(1);

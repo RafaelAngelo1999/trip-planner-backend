@@ -1,7 +1,7 @@
 import { HotelEntity } from '../../domain/entities/hotel.entity';
 
 export const hotelSeedData = [
-  // Hotéis em Belo Horizonte (15 hotéis)
+  // Hotéis em Belo Horizonte (50 hotéis)
   {
     hotelId: 'bh-001',
     name: 'Tryp by Wyndham Belo Horizonte Savassi',

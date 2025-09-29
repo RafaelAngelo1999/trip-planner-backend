@@ -1,24 +1,29 @@
 import { FlightEntity } from '../../domain/entities/flight.entity';
 
 export const flightSeedData = [
-  // Voos domésticos diretos CNF ↔ GRU
+  // ==============================================
+  // VOOS CNF → SFO (IDA) - 01/10/2025
+  // ==============================================
+
+  // Voo 1 - Madrugada
   {
-    flightNumber: 'LA3001',
+    flightNumber: 'LA8001',
     airline: 'LATAM',
     origin: 'CNF',
-    destination: 'GRU',
-    departureTime: '2024-12-15T06:00:00Z',
-    arrivalTime: '2024-12-15T07:20:00Z',
-    price: 800,
+    destination: 'SFO',
+    departureTime: '2025-10-01T02:30:00Z',
+    arrivalTime: '2025-10-01T18:45:00Z',
+    price: 3200,
     currency: 'BRL',
-    availableSeats: 150,
-    totalSeats: 180,
-    aircraft: 'Airbus A320',
-    duration: '01:20',
-    stops: 0,
+    availableSeats: 35,
+    totalSeats: 300,
+    aircraft: 'Boeing 787-9',
+    duration: '16:15',
+    stops: 1,
+    stopCities: ['GRU'],
     baggageIncluded: true,
-    mealIncluded: false,
-    refundable: false,
+    mealIncluded: true,
+    refundable: true,
     bookingClass: 'economy' as const,
   },
   {
