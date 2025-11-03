@@ -38,7 +38,7 @@ jobs:
 
       - name: ✅ Auto-approve PR
         if: steps.check-update.outputs.auto_merge == 'true'
-        uses: hmarr/auto-approve-action@v3
+        uses: hmarr/auto-approve-action@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
